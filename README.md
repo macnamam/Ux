@@ -1,7 +1,8 @@
-# React Based mapping Application
+# Node web application 
 
 ```
-$ git clone https://github.com/wbkd/react-starterkit.git && cd react-starterkit
+$ git clone https://github.com/MartySmores/Ux.git
+
 ```
 
 ## Installation
