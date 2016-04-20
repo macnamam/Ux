@@ -4,7 +4,7 @@
 ```
 $ git clone https://github.com/MartySmores/Ux.git
 ```
-to push ammendment to the code base please use a secure key and set the remote url of the repository as follows :
+To push amendments to the code base please use a secure key and set the remote url of the repository as follows :
 
 ```
 git remote set-url origin ssh://git@github.com/MartySmores/Ux.git
