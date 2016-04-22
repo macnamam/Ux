@@ -198,9 +198,10 @@ left: 100%;
                function mapDraw(collectionpassed){
                  /* Add a LatLng object to each item in the dataset */
 
+
                  collection = {}
-                 collection['objects'] = collectionpassed;
-                 console.log(JSON.stringify(collection));
+                 collection['objects'] = JSON.parse(collectionpassed);
+
 
                 colormap = {"objects":[
                 {"dataset":{"colour":["#67001f"]}},
@@ -231,16 +232,21 @@ left: 100%;
 
                 $.extend( true, collection, colormap);
 
+                console.log("---------\n");
+                console.log(JSON.stringify(collection));
+
+
+
                 collection.objects.forEach(function(d) {
-                   d.LatLng = new L.LatLng(d.dataset.coordinates[0],
-                               d.dataset.coordinates[1])
+                   d.LatLng = new L.LatLng(d.dataset.Coordinates[0],
+                               d.dataset.Coordinates[1])
                  })
 
                var tip = d3.tip()
                .attr('class', 'd3-tip')
                .offset([-10, 0])
                .html(function(d) {
-                 return "<strong>"+d.dataset.city[0]+" : </strong> <span style='color:#233c3a'>" + d.dataset.coordinates[0] + "</span>";
+                 return "<strong>"+d.dataset.City[0]+" : </strong> <span style='color:#233c3a'>" + d.dataset.Coordinates[0] + "</span>";
                })
 
                svg.call(tip);
@@ -253,7 +259,7 @@ left: 100%;
                    .style("opacity", .8)
                    .style("fill", function(d) {
                      return d.dataset.colour[0];
-                 }).attr("r", function(d) { return d.dataset.total[0]; })
+                 }).attr("r", function(d) { return Math.round(d.dataset.total[0]/2000); })
                  .on('mouseover', tip.show)
                  .on('mouseout', tip.hide);
 
