@@ -3,23 +3,58 @@ import xhr from 'xhr';
 import Promise from 'promise';
 
 
-function fetchJSON({url}) {
-    var promise = new Promise(function(resolve, reject){
-        xhr({
-            uri: url,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }, (err, resp, body) => {
-            if(err) {
-                reject(err);
-                return;
-            }
-            resolve(JSON.parse(body));
-        });
-    });
+// function fetchJSON({url}) {
+//     var promise = new Promise(function(resolve, reject){
+//         xhr({
+//             uri: url,
+//             headers: {
+//                 "Content-Type": "application/json"
+//             }
+//         }, (err, resp, body) => {
+//             if(err) {
+//                 reject(err);
+//                 return;
+//             }
+//             resolve(JSON.parse(body));
+//         });
+//     });
+//
+//     return promise;
+// }
 
-    return promise;
+
+function getJSON(url) {
+  // Return a new promise.
+  return new Promise(function(resolve, reject) {
+    // Do the usual XHR stuff
+    var req = new XMLHttpRequest();
+    req.open('GET', url);
+
+    req.onload = function() {
+      // This is called even on 404 etc
+      // so check the status
+      if (req.status == 200) {
+        // Resolve the promise with the response text
+        resolve(req.response);
+        LoadJSONandDraw(req.response);
+        // mapClear();mapDraw(req.response);
+        // console.log(req.response);
+      }
+      else {
+        // Otherwise reject with the status text
+        // which will hopefully be a meaningful error
+        reject(Error(req.statusText));
+      }
+    };
+
+    // Handle network errors
+    req.onerror = function() {
+      reject(Error("Network Error"));
+    };
+
+    // Make the request
+    req.send();
+  });
 }
 
 
@@ -41,13 +76,33 @@ function onSelectItem(item) {
 
 }
 
+function LoadJSONandDraw(item){
+
+  console.log("time to do something with the JSON files");
+  console.log(item);
+  mapClear();mapDraw(item);
+
+
+}
+
 function onLoadData2json(item){
+  // correct items have been added to the form
+  // fired off a promise to return the json
   console.log('item selected', item);
+  console.log("This value should be an array");
+  console.log(item);
   // http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top
   // '../config/graphs/' + selectedChart +'.json'
-  // var tt = fetchJSON({ url: 'http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top' })
-                // .then(this.initActivity.bind(this));
 
+  var _YEAR = item[1];
+  var _DRG = ((item[2].length > 2) ? item[2] : "0"+item[2])
+ console.log("Somers");
+ console.log(_DRG);
+  // http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top
+  var urlquery = "http://ca675.azurewebsites.net/query2.php?DRG="+_DRG+"&dbQuery="+_YEAR;
+
+  // var tt = fetchJSON({ url: 'http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top' }).then(this.initActivity.bind(this));
+  getJSON(urlquery);
 }
 
 var CoordinatesStore = function() {
@@ -59,6 +114,7 @@ Object.assign(CoordinatesStore.prototype, {
     console.log('inited!');
     EventBus.on('selectItem', onSelectItem, this);
     EventBus.on('LoadData2json', onLoadData2json, this);
+    EventBus.on('LoadJSONandDraw', onLoadData2json, this);
   },
 
   onSelectItem(item) {
@@ -67,6 +123,9 @@ Object.assign(CoordinatesStore.prototype, {
   },
 
   onLoadData2json(item){
+    //
+  },
+  LoadJSONandDraw(item){
     //
   },
 

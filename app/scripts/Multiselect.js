@@ -121,10 +121,26 @@ const PROCEDURES = [
 ];
 
 const TableItems = [
-  { name: 'Louise', age: 27, color: 'red' },
-  { name: 'Margaret', age: 15, color: 'blue'},
-  { name: 'Lisa', age:34, color: 'yellow'}
-];
+{"City":"SACRAMENTO","coordinates":"38.5816, -121.494","data":10,"total":146892},
+{"City":"EASTON","coordinates":"38.7743, -76.0763","data":9,"total":116349.84},
+{"City":"EASTON","coordinates":"40.6884, -75.2207","data":8,"total":116349.84},
+{"City":"SAINT HELENA","coordinates":"38.5052, -122.47","data":7,"total":105929.47},
+{"City":"BURBANK","coordinates":"34.1808, -118.309","data":6,"total":101282.03},
+{"City":"BROOKSVILLE","coordinates":"28.5553, -82.3879","data":5,"total":98982.945},
+{"City":"HOT SPRINGS","coordinates":"34.5037, -93.0552","data":4,"total":98388.78},
+{"City":"REDWOOD CITY","coordinates":"37.4852, -122.236","data":3,"total":94693.84},
+{"City":"STANFORD","coordinates":"37.4241, -122.166","data":2,"total":90836.484},
+{"City":"PALM SPRINGS","coordinates":"33.8303, -116.545","data":1,"total":88175}
+]
+
+var ModTable=[];
+$.map(TableItems, function( val, i ) {
+                  ModTable[i] = {}
+                  ModTable[i]['Rank'] = i+1;
+                  ModTable[i]['City'] = val['City'];
+                  ModTable[i]['Cost'] = val['total'];
+});
+
 
 
 var MultiSelectField = React.createClass({
@@ -204,8 +220,12 @@ var MultiSelectField = React.createClass({
 		<br/>
 		<Select simpleValue disabled={this.state.disabled} value={this.state.dropdownval} placeholder="Select a medical Procedure" options={this.state.options} onChange={this.handleSelectChange} />
 		<br/>
-		<JsonTable rows={TableItems} />
+		<div className="ui secondary segment">
+
+
+		<JsonTable rows={ModTable} />
 		</div>
+	</div>
 
 		);
 	}
