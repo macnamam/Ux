@@ -9,12 +9,12 @@ const STATES = [
 ];
 
 const YEARS = [
+	{ label: '2011 Top 10', value: '2011top' },
+	{ label: '2011 Bottom 10', value: '2011bottom' },
+	{ label: '2012 Top 10', value: '2012top' },
+	{ label: '2012 Bottom 10', value: '2012bottom' },
 	{ label: '2013 Top 10', value: '2013top' },
 	{ label: '2013 Bottom 10', value: '2013bottom' },
-	{ label: '2014 Top 10', value: '2014top' },
-	{ label: '2014 Bottom 10', value: '2014bottom' },
-	{ label: '2015 Top 10', value: '2015top' },
-	{ label: '2015 Bottom 10', value: '2015bottom' },
 ];
 
 const PROCEDURES = [
@@ -134,12 +134,12 @@ const TableItems = [
 ]
 
 var ModTable=[];
-$.map(TableItems, function( val, i ) {
-                  ModTable[i] = {}
-                  ModTable[i]['Rank'] = i+1;
-                  ModTable[i]['City'] = val['City'];
-                  ModTable[i]['Cost'] = val['total'];
-});
+// $.map(TableItems, function( val, i ) {
+//                   ModTable[i] = {}
+//                   ModTable[i]['Rank'] = i+1;
+//                   ModTable[i]['City'] = val['City'];
+//                   ModTable[i]['Cost'] = val['total'];
+// });
 
 
 
@@ -166,12 +166,12 @@ var MultiSelectField = React.createClass({
 
 	checkValPreLoading(){
 		if (this.state.dropdownstate&&this.state.dropdownyear&&this.state.dropdownval){
-			console.log("Lets start loading....");
+			// console.log("Lets start loading....");
 			EventBus.emit('LoadData2json', [this.state.dropdownstate,this.state.dropdownyear,this.state.dropdownval]);
 				// EventBus.emit('LoadData2json', [this.state.dropdownstate]);
 		}
 		else{
-			console.log("More Information is Required...");
+			// console.log("More Information is Required...");
 		}
 	},
 

@@ -63,11 +63,11 @@ function onSelectItem(item) {
   // console.log('item selected', item);
 
   if(item=="vanilla"){
-    console.log('item selected', item);
+    // console.log('item selected', item);
     mapClear();mapDraw(g1);
   }
   if(item=="caramel"){
-    console.log('item selected', item);
+    // console.log('item selected', item);
     mapClear();mapDraw(g3);
   }
   else{
@@ -78,26 +78,20 @@ function onSelectItem(item) {
 
 function LoadJSONandDraw(item){
 
-  console.log("time to do something with the JSON files");
-  console.log(item);
   mapClear();mapDraw(item);
-
-
 }
 
 function onLoadData2json(item){
   // correct items have been added to the form
   // fired off a promise to return the json
-  console.log('item selected', item);
-  console.log("This value should be an array");
-  console.log(item);
+  // console.log('item selected', item);
+
   // http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top
   // '../config/graphs/' + selectedChart +'.json'
 
   var _YEAR = item[1];
   var _DRG = ((item[2].length > 2) ? item[2] : "0"+item[2])
- console.log("Somers");
- console.log(_DRG);
+
   // http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top
   var urlquery = "http://ca675.azurewebsites.net/query2.php?DRG="+_DRG+"&dbQuery="+_YEAR;
 
@@ -111,7 +105,7 @@ var CoordinatesStore = function() {
 
 Object.assign(CoordinatesStore.prototype, {
   initialize() {
-    console.log('inited!');
+    // console.log('inited!');
     EventBus.on('selectItem', onSelectItem, this);
     EventBus.on('LoadData2json', onLoadData2json, this);
     EventBus.on('LoadJSONandDraw', onLoadData2json, this);

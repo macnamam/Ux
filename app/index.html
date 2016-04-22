@@ -232,8 +232,8 @@ left: 100%;
 
                 $.extend( true, collection, colormap);
 
-                console.log("---------\n");
-                console.log(JSON.stringify(collection));
+                // console.log("---------\n");
+                // console.log(JSON.stringify(collection));
 
 
 
@@ -246,7 +246,9 @@ left: 100%;
                .attr('class', 'd3-tip')
                .offset([-10, 0])
                .html(function(d) {
-                 return "<strong>"+d.dataset.City[0]+" : </strong> <span style='color:#233c3a'>" + d.dataset.Coordinates[0] + "</span>";
+                 var rank = ["11","10","9","8","7","6","5","4","3","2","1"];
+                 var rankindx = rank[parseInt(d.dataset.Rank[0])];
+                 return "<strong>"+rankindx+". <span style='color:white'>"+d.dataset.City[0]+"</span> : </strong> <span style='color:#233c3a'>" +"$"+ d.dataset.total[0] + "</span>";
                })
 
                svg.call(tip);
@@ -256,10 +258,10 @@ left: 100%;
                    .enter().append("circle")
                    .style("stroke", "white")
                    .style("stroke-width", 2)
-                   .style("opacity", .8)
+                   .style("opacity", .5)
                    .style("fill", function(d) {
                      return d.dataset.colour[0];
-                 }).attr("r", function(d) { return Math.round(d.dataset.total[0]/2000); })
+                 }).attr("r", function(d) { return Math.round(d.dataset.total[0]/1000); })
                  .on('mouseover', tip.show)
                  .on('mouseout', tip.hide);
 
