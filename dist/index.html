@@ -256,10 +256,10 @@ left: 100%;
                    .enter().append("circle")
                    .style("stroke", "white")
                    .style("stroke-width", 2)
-                   .style("opacity", .8)
+                   .style("opacity", .5)
                    .style("fill", function(d) {
                      return d.dataset.colour[0];
-                 }).attr("r", function(d) { return Math.round(d.dataset.total[0]/2000); })
+                 }).attr("r", function(d) { return Math.round(d.dataset.total[0]/1000); })
                  .on('mouseover', tip.show)
                  .on('mouseout', tip.hide);
 
