@@ -4,8 +4,8 @@ import EventBus from './EventBus';
 import JsonTable from 'react-json-table';
 
 const STATES = [
-	{ label: 'All', value: 'ALL' },
-	{ label: 'State', value: 'STA' },
+	{ label: 'All', value: 'ALL' }
+	,{ label: 'State', value: 'STA' }
 ];
 
 const YEARS = [

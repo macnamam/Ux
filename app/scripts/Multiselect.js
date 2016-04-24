@@ -4,7 +4,57 @@ import EventBus from './EventBus';
 import JsonTable from 'react-json-table';
 
 const STATES = [
-	{ label: 'All', value: 'ALL' }
+	{ label: 'All States', value: 'ALL' }
+	,{ label: 'AL - Alabama', value: 'AL' },
+{ label: 'AK - Alaska', value: 'AK' },
+{ label: 'AZ - Arizona', value: 'AZ' },
+{ label: 'AR - Arkansas', value: 'AR' },
+{ label: 'CA - California', value: 'CA' },
+{ label: 'CO - Colorado', value: 'CO' },
+{ label: 'CT - Connecticut', value: 'CT' },
+{ label: 'DE - Delaware', value: 'DE' },
+{ label: 'FL - Florida', value: 'FL' },
+{ label: 'GA - Georgia', value: 'GA' },
+{ label: 'HI - Hawaii', value: 'HI' },
+{ label: 'ID - Idaho', value: 'ID' },
+{ label: 'IL - Illinois', value: 'IL' },
+{ label: 'IN - Indiana', value: 'IN' },
+{ label: 'IA - Iowa', value: 'IA' },
+{ label: 'KS - Kansas', value: 'KS' },
+{ label: 'KY - Kentucky', value: 'KY' },
+{ label: 'LA - Louisiana', value: 'LA' },
+{ label: 'ME - Maine', value: 'ME' },
+{ label: 'MD - Maryland', value: 'MD' },
+{ label: 'MA - Massachusetts', value: 'MA' },
+{ label: 'MI - Michigan', value: 'MI' },
+{ label: 'MN - Minnesota', value: 'MN' },
+{ label: 'MS - Mississippi', value: 'MS' },
+{ label: 'MO - Missouri', value: 'MO' },
+{ label: 'MT - Montana', value: 'MT' },
+{ label: 'NE - Nebraska', value: 'NE' },
+{ label: 'NV - Nevada', value: 'NV' },
+{ label: 'NH - New Hampshire', value: 'NH' },
+{ label: 'NJ - New Jersey', value: 'NJ' },
+{ label: 'NM - New Mexico', value: 'NM' },
+{ label: 'NY - New York', value: 'NY' },
+{ label: 'NC - North Carolina', value: 'NC' },
+{ label: 'ND - North Dakota', value: 'ND' },
+{ label: 'OH - Ohio', value: 'OH' },
+{ label: 'OK - Oklahoma', value: 'OK' },
+{ label: 'OR - Oregon', value: 'OR' },
+{ label: 'PA - Pennsylvania', value: 'PA' },
+{ label: 'RI - Rhode Island', value: 'RI' },
+{ label: 'SC - South Carolina', value: 'SC' },
+{ label: 'SD - South Dakota', value: 'SD' },
+{ label: 'TN - Tennessee', value: 'TN' },
+{ label: 'TX - Texas', value: 'TX' },
+{ label: 'UT - Utah', value: 'UT' },
+{ label: 'VT - Vermont', value: 'VT' },
+{ label: 'VA - Virginia', value: 'VA' },
+{ label: 'WA - Washington', value: 'WA' },
+{ label: 'WV - West Virginia', value: 'WV' },
+{ label: 'WI - Wisconsin', value: 'WI' },
+{ label: 'WY - Wyoming', value: 'WY' }
 ];
 
 const YEARS = [
@@ -119,6 +169,17 @@ const PROCEDURES = [
 	{ label: '948 - SIGNS & SYMPTOMS W/O MCC', value: '948' },
 ];
 
+const FACTOR = [
+	{ label: '0.5x', value: '0.5' },
+	{ label: '1x', value: '1' },
+	{ label: '2x', value: '2' },
+	{ label: '5x', value: '5' },
+	{ label: '10x', value: '10' },
+	{ label: '20x', value: '20' },
+	{ label: '50x', value: '50' },
+
+];
+
 const TableItems = [
 {"City":"SACRAMENTO","coordinates":"38.5816, -121.494","data":10,"total":146892},
 {"City":"EASTON","coordinates":"38.7743, -76.0763","data":9,"total":116349.84},
@@ -155,6 +216,7 @@ var MultiSelectField = React.createClass({
 			options_State: STATES,
 			options_Year:YEARS,
 			options: PROCEDURES,
+			options_Factor:FACTOR,
 			// dropdownstate: [],
 			// dropdownval: [],
 		};
@@ -164,9 +226,9 @@ var MultiSelectField = React.createClass({
 	},
 
 	checkValPreLoading(){
-		if (this.state.dropdownstate&&this.state.dropdownyear&&this.state.dropdownval){
+		if (this.state.dropdownstate&&this.state.dropdownyear&&this.state.dropdownval&&this.state.dropdownfactor){
 			// console.log("Lets start loading....");
-			EventBus.emit('LoadData2json', [this.state.dropdownstate,this.state.dropdownyear,this.state.dropdownval]);
+			EventBus.emit('LoadData2json', [this.state.dropdownstate,this.state.dropdownyear,this.state.dropdownval,this.state.dropdownfactor]);
 				// EventBus.emit('LoadData2json', [this.state.dropdownstate]);
 		}
 		else{
@@ -189,6 +251,16 @@ var MultiSelectField = React.createClass({
 		EventBus.emit('selectItem', value);
 		this.setState({
 			dropdownyear: value,
+			},function() {
+				this.checkValPreLoading();
+			});
+	},
+
+	handleSelectChangeFactor (value) {
+
+		EventBus.emit('selectItem', value);
+		this.setState({
+			dropdownfactor: value,
 			},function() {
 				this.checkValPreLoading();
 			});
@@ -219,6 +291,7 @@ var MultiSelectField = React.createClass({
 		<br/>
 		<Select simpleValue disabled={this.state.disabled} value={this.state.dropdownval} placeholder="Select a medical Procedure" options={this.state.options} onChange={this.handleSelectChange} />
 		<br/>
+		<Select simpleValue disabled={this.state.statedisabled} value={this.state.dropdownfactor} placeholder="Scaling factor may need changing" options={this.state.options_Factor} onChange={this.handleSelectChangeFactor}/>
 		<div className="ui secondary segment">
 
 

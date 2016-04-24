@@ -13,6 +13,7 @@
   <link rel="stylesheet" type="text/css" href="css/select.css">
   <script src="js/jquery.min.js"></script>
   <script src="js/semantic.js"></script>
+  <script src="js/lodash.core.min.js"></script>
 
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"/>
   <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -191,43 +192,40 @@ left: 100%;
    var svg = d3.select("#map").select("svg"),
    g = svg.append("g");
 
-   g1 = "circle.json";
-   g3 = "circle3.json";
 
 
-               function mapDraw(collectionpassed){
+
+               function mapDraw(collectionpassed,factor){
+                 console.log("inside d3");
+                 console.log(factor);
                  /* Add a LatLng object to each item in the dataset */
 
 
                  collection = {}
                  collection['objects'] = JSON.parse(collectionpassed);
+                //  console.log("----");
+                console.log(collection);
+                // {"dataset":{"colour":["#67001f"]}},
+                var collectionsize = _.size(collection['objects']);
 
-
-                colormap = {"objects":[
-                {"dataset":{"colour":["#67001f"]}},
-                {"dataset":{"colour":["#980043"]}},
-                {"dataset":{"colour":["#ce1256"]}},
-                {"dataset":{"colour":["#67001f"]}},
-                {"dataset":{"colour":["#980043"]}},
-                {"dataset":{"colour":["#ce1256"]}},
-                {"dataset":{"colour":["#67001f"]}},
-                {"dataset":{"colour":["#980043"]}},
-                {"dataset":{"colour":["#ce1256"]}},
-                {"dataset":{"colour":["#e7298a"]}}
-              ]};
-
+                colormap = {"objects":[]}
+                for (var y=0; y<collectionsize; y++){
+                  colormap['objects'].push({"dataset":{"colour":["#ffffff"]}})
+                }
 
 
                 // var colorArr = ["#edf8fb","#b2e2e2","#66c2a4","#238b45"];
                 // var colorArr = ["#084081","#0868ac","#2b8cbe","#4eb3d3","#7bccc4","#a8ddb5","#ccebc5","#e0f3db","#e0f3db","#e0f3db"];
                 var colorArr = ["#49006a","#7a0177","#ae017e","#dd3497","#f768a1","#fa9fb5","#fcc5c0","#fde0dd","#fde0dd","#fde0dd"];
+                // var colorArr = ["#49006a","#7a0177","#ae017e","#dd3497","#f768a1","#fa9fb5"];
 
                 // var colorArr = ["#f7fcf0","#e0f3db","#ccebc5","#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081","#084081"];
 
 
-                $.map(colorArr, function( val, i ) {
-                  colormap.objects[i].dataset.colour[0] = val;
-                });
+                for (var y=0; y<collectionsize; y++){
+                  colormap.objects[y].dataset.colour[0] = colorArr[y];
+                  collection.objects[y].dataset['Rank'][0] = y+1;
+                }
 
 
                 $.extend( true, collection, colormap);
@@ -246,9 +244,9 @@ left: 100%;
                .attr('class', 'd3-tip')
                .offset([-10, 0])
                .html(function(d) {
-                 var rank = ["11","10","9","8","7","6","5","4","3","2","1"];
-                 var rankindx = rank[parseInt(d.dataset.Rank[0])];
-                 return "<strong>"+rankindx+". <span style='color:white'>"+d.dataset.City[0]+"</span> : </strong> <span style='color:#233c3a'>" +"$"+ d.dataset.total[0] + "</span>";
+                //  var rank = ["11","10","9","8","7","6","5","4","3","2","1"];
+                //  var rankindx = rank[parseInt(d.dataset.Rank[0])];
+                 return "<strong>"+d.dataset.Rank[0]+". <span style='color:white'>"+d.dataset.City[0]+"</span> : </strong> <span style='color:#233c3a'>" +"$"+ d.dataset.total[0] + "</span>";
                })
 
                svg.call(tip);
@@ -261,7 +259,7 @@ left: 100%;
                    .style("opacity", .5)
                    .style("fill", function(d) {
                      return d.dataset.colour[0];
-                 }).attr("r", function(d) { return Math.round(d.dataset.total[0]/1000); })
+                 }).attr("r", function(d) { return Math.round(d.dataset.total[0]/(1000*factor)); })
                  .on('mouseover', tip.show)
                  .on('mouseout', tip.hide);
 
