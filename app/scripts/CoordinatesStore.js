@@ -23,7 +23,7 @@ import Promise from 'promise';
 // }
 
 
-function getJSON(url) {
+function getJSON(url,factor) {
   // Return a new promise.
   return new Promise(function(resolve, reject) {
     // Do the usual XHR stuff
@@ -36,7 +36,17 @@ function getJSON(url) {
       if (req.status == 200) {
         // Resolve the promise with the response text
         resolve(req.response);
-        LoadJSONandDraw(req.response);
+
+        if (req.response.length==4){
+            // your code here.
+            // console.log("no data on the server...");
+            alert("No data appears on the Server - Please try again");
+        }
+        else{
+          // console.log(req.response);
+          LoadJSONandDraw(req.response,factor);
+        }
+
         // mapClear();mapDraw(req.response);
         // console.log(req.response);
       }
@@ -76,9 +86,9 @@ function onSelectItem(item) {
 
 }
 
-function LoadJSONandDraw(item){
+function LoadJSONandDraw(item,factor){
 
-  mapClear();mapDraw(item);
+  mapClear();mapDraw(item,factor);
 }
 
 function onLoadData2json(item){
@@ -88,15 +98,25 @@ function onLoadData2json(item){
 
   // http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top
   // '../config/graphs/' + selectedChart +'.json'
-
+  var _State = item[0];
   var _YEAR = item[1];
   var _DRG = ((item[2].length > 2) ? item[2] : "0"+item[2])
 
-  // http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top
+  if (_State=="ALL"){
   var urlquery = "http://ca675.azurewebsites.net/query2.php?DRG="+_DRG+"&dbQuery="+_YEAR;
+  }
+  else{
+    var urlquery = "http://ca675.azurewebsites.net/query3.php?State="+_State+"&DRG="+_DRG+"&dbQuery="+_YEAR
+  }
+  console.log(urlquery);
+  // console.log("9999");
+  // console.log(urlquery);
+  // http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top
+
+  // var urlquery = "http://ca675.azurewebsites.net/query2.php?DRG="+_DRG+"&dbQuery="+_YEAR;
 
   // var tt = fetchJSON({ url: 'http://ca675.azurewebsites.net/query2.php?DRG=039&dbQuery=2011top' }).then(this.initActivity.bind(this));
-  getJSON(urlquery);
+  getJSON(urlquery,item[3]);
 }
 
 var CoordinatesStore = function() {
@@ -120,6 +140,9 @@ Object.assign(CoordinatesStore.prototype, {
     //
   },
   LoadJSONandDraw(item){
+    //
+  },
+  onLoadData2json(item){
     //
   },
 
